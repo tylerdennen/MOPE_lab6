@@ -1,6 +1,7 @@
 import random
 import numpy
 import math
+import time
 from scipy.stats import t,f
 
 
@@ -212,15 +213,24 @@ while not condition_fisher:
         xnatmod = [[x[i][j] for i in range(N)] for j in range(3)]
         y = geny(N, m, f_x1_x2_x3)
         y_average = [sum(y[i])/m for i in range(N)]
+        start_time = time.perf_counter()
         condition_cohren = cohren(y, y_average)
+        finish_time = time.perf_counter() - start_time
+        print(f'Час виконання перевірки за критерієм Кохрена:{finish_time}')
         if not condition_cohren:
             m += 1
     b0 = calcb(y_average)
     print('Коефіцієнти регресії:')
     print(b0)
+    start_time = time.perf_counter()
     d = sum(student(y, y_average))
+    finish_time = time.perf_counter() - start_time
+    print(f'Час виконання перевірки за критерієм Стьюдента:{finish_time}')
     print(f'Кількість значущих коефіцієнтів:{d}')
+    start_time = time.perf_counter()
     condition_fisher = fisher(b0, N, m, d, y, y_average)
+    finish_time = time.perf_counter() - start_time
+    print(f'Час виконання перевірки за критерієм Фішера:{finish_time}')
     if condition_fisher:
         print('Отримана математична модель адекватна експериментальним даним')
 
